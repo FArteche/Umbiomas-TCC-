@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
             Criar Nova Característica Socioeconômica
         </h2>
     </x-slot>
@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- Inicia o Alpine.js, isModalOpen controla a visibilidade do popup --}}
             <div x-data="caracteristicaFormComponent()" class="bg-white p-6 rounded-lg shadow-md">
-                <form action="{{ route('caracteristica_se.store') }}" method="POST">
+                <form action="{{ route('caracteristica_se.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="bioma_id" value="{{ $bioma_id }}">
                     <div class="space-y-6">
@@ -60,6 +60,14 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+
+                        <div>
+                            <label for="imagem_cse" class="block text-sm font-medium text-gray-700">Imagem (Opcional)</label>
+                            <input type="file" name="imagem_cse" id="imagem_cse" class="mt-1 block w-full ...">
+                            @error('imagem_cse')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="mt-8 flex items-center space-x-4 border-t pt-6">
@@ -104,7 +112,7 @@
         </div>
     </div>
 
-<script>
+    <script>
         function caracteristicaFormComponent() {
             return {
                 isModalOpen: false,
@@ -120,34 +128,39 @@
 
                     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                    fetch('{{ route("tipos-cse.storeAjax") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken,
-                            'Accept': 'application/json',
-                        },
-                        body: JSON.stringify({ nome_tipocse: newName }),
-                    })
-                    .then(response => {
-                        if (!response.ok) { return response.json().then(data => Promise.reject(data)); }
-                        return response.json();
-                    })
-                    .then(newTipo => {
-                        const select = document.getElementById('tipocse_id');
-                        const option = new Option(newTipo.nome_tipocse, newTipo.id_tipocse);
-                        select.add(option);
-                        select.value = newTipo.id_tipocse;
+                    fetch('{{ route('tipos-cse.storeAjax') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                                'Accept': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                nome_tipocse: newName
+                            }),
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(data => Promise.reject(data));
+                            }
+                            return response.json();
+                        })
+                        .then(newTipo => {
+                            const select = document.getElementById('tipocse_id');
+                            const option = new Option(newTipo.nome_tipocse, newTipo.id_tipocse);
+                            select.add(option);
+                            select.value = newTipo.id_tipocse;
 
-                        this.newTipoName = ''; // Usa 'this' para acessar as propriedades
-                        this.isModalOpen = false; // Usa 'this' para acessar as propriedades
+                            this.newTipoName = ''; // Usa 'this' para acessar as propriedades
+                            this.isModalOpen = false; // Usa 'this' para acessar as propriedades
 
-                        alert('Tipo "' + newTipo.nome_tipocse + '" adicionado com sucesso!');
-                    })
-                    .catch(errorData => {
-                        console.error('Error:', errorData);
-                        alert('Erro ao adicionar tipo: ' + (errorData.error || 'Erro desconhecido. Verifique o console.'));
-                    });
+                            alert('Tipo "' + newTipo.nome_tipocse + '" adicionado com sucesso!');
+                        })
+                        .catch(errorData => {
+                            console.error('Error:', errorData);
+                            alert('Erro ao adicionar tipo: ' + (errorData.error ||
+                                'Erro desconhecido. Verifique o console.'));
+                        });
                 }
             }
         }

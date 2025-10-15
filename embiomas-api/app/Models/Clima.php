@@ -13,7 +13,11 @@ class Clima extends Model
 
     protected $table = 'clima';
     protected $primaryKey = 'id_clima';
-    protected $fillable = ['nome_clima', 'descricao_clima'];
+    protected $fillable = [
+        'nome_clima',
+        'imagem_clima',
+        'descricao_clima'
+    ];
 
     //RELACIONAMENTO PARA O HISTÓRICO DE ALTERAÇÕES (MORPH MANY)
     public function historico()

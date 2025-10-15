@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id('id_ap');
             $table->string('nome_ap', 100);
             $table->text('descricao_ap');
+            $table->string('imagem_ap')->nullable();
+            $table->json('area_geografica')->nullable();
             $table->foreignId('bioma_id')->constrained('biomas', 'id_bioma')->onDelete('cascade');
             $table->foreignId('tipoap_id')->constrained('tipo_area_preservacao', 'id_tipoap')->onDelete('cascade');
             $table->timestamps();

@@ -13,7 +13,14 @@ class Area_Preservacao extends Model
 
     protected $table = 'area_preservacao';
     protected $primaryKey = 'id_ap';
-    protected $fillable = ['nome_ap', 'descricao_ap', 'bioma_id', 'tipoap_id'];
+    protected $fillable = [
+        'nome_ap',
+        'descricao_ap',
+        'bioma_id',
+        'tipoap_id',
+        'imagem_ap',
+        'area_geografica'
+    ];
 
     public function bioma()
     {

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_cse');
             $table->string('nome_cse', 100);
             $table->text('descricao_cse');
+            $table->string('imagem_cse')->nullable();
             $table->foreignId('bioma_id')->constrained('biomas', 'id_bioma')->onDelete('cascade');
             $table->foreignId('tipocse_id')->constrained('tipo_cse', 'id_tipocse')->onDelete('cascade');
             $table->timestamps();

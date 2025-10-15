@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 rounded-lg shadow-md">
-                <form action="{{ route('clima.store') }}" method="POST">
+                <form action="{{ route('clima.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <input type="hidden" name="return_to" value="{{ $returnTo }}">
@@ -18,7 +18,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="nome_clima" class="block mb-2 text-sm font-medium text-gray-900">Nome
-                                    </label>
+                                </label>
                                 <input type="text" name="nome_clima" id="nome_clima"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                                     value="{{ old('nome_clima') }}" required>
@@ -32,7 +32,15 @@
                                 <textarea name="descricao_clima" id="descricao_clima" rows="4"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">{{ old('descricao_clima') }}</textarea>
                             </div>
-
+                            <div>
+                                <label for="imagem_clima" class="block text-sm font-medium text-gray-700">Imagem do
+                                    Clima (Opcional)</label>
+                                <input type="file" name="imagem_clima" id="imagem_clima"
+                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                @error('imagem_clima')
+                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
 
                         <div class="mt-8 flex items-center space-x-4 border-t pt-6">

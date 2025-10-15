@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Area_Preservacao;
 use App\Models\Tipo_Area_Preservacao;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class Area_PreservacaoController extends Controller
 {
@@ -45,9 +46,16 @@ class Area_PreservacaoController extends Controller
         $validatedData = $request->validate([
             'nome_ap' => 'required|string|max:100',
             'descricao_ap' => 'required|string',
+            'imagem_ap' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20000',
             'tipoap_id' => 'required|exists:tipo_area_preservacao,id_tipoap',
             'bioma_id' => 'required|exists:biomas,id_bioma',
         ]);
+
+        if ($request->hasFile('imagem_ap')) {
+            $path = $request->file('imagem_ap')->store('images/areapreservacao', 'public');
+
+            $validatedData['imagem_ap'] = $path;
+        }
 
         Area_Preservacao::create($validatedData);
 
@@ -85,8 +93,18 @@ class Area_PreservacaoController extends Controller
         $validatedData = $request->validate([
             'nome_ap' => 'required|string|max:100',
             'descricao_ap' => 'required|string',
+            'imagem_ap' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20000',
             'tipoap_id' => 'required|exists:tipo_area_preservacao,id_tipoap'
         ]);
+
+        if ($request->hasFile('imagem_ap')) {
+            if ($area_preservacao->imagem_ap) {
+                Storage::disk('public')->delete($area_preservacao->imagem_ap);
+            }
+
+            $path = $request->file('imagem_ap')->store('images/areapreservacao', 'public');
+            $validatedData['imagem_ap'] = $path;
+        }
 
         $area_preservacao->update($validatedData);
 
@@ -103,5 +121,21 @@ class Area_PreservacaoController extends Controller
         $area_preservacao->delete();
 
         return back()->with('success', 'Area de preservação deletada com sucesso!');
+    }
+
+    public function editMap(Area_Preservacao $area_preservacao)
+    {
+        return view('admin.areapreservacao.edit_map', ['area' => $area_preservacao]);
+    }
+
+    public function updateMap(Request $request, Area_Preservacao $area_preservacao)
+    {
+        $request->validate(['area_geografica' => 'nullable|json']);
+
+        $area_preservacao->update([
+            'area_geografica' => $request->input('area_geografica')
+        ]);
+
+        return redirect()->route('areas-preservacao.editMap', $area_preservacao)->with('success', 'Mapa atualizado com sucesso!');
     }
 }

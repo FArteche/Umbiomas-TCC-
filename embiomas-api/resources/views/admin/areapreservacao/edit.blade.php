@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
             Editando: {{ $area_preservacao->nome_ap }}
         </h2>
     </x-slot>
@@ -9,7 +9,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- Inicia o Alpine.js, isModalOpen controla a visibilidade do popup --}}
             <div x-data="areapreservacaoFormComponent()" class="bg-white p-6 rounded-lg shadow-md">
-                <form action="{{ route('area_preservacao.update', $area_preservacao) }}" method="POST">
+                <form action="{{ route('area_preservacao.update', $area_preservacao) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
 
                     <input type="hidden" name="return_to" value="{{ $returnTo }}">
@@ -64,6 +65,22 @@
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
+                        @if ($area_preservacao->imagem_ap)
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Imagem Atual</label>
+                                <img src="{{ asset('storage/' . $area_preservacao->imagem_ap) }}"
+                                    alt="Imagem de {{ $area_preservacao->nome_ap }}"
+                                    class="mt-2 h-40 w-auto rounded-md">
+                            </div>
+                        @endif
+                        <div>
+                            <label for="imagem_ap" class="block text-sm font-medium text-gray-700">Substituir Imagem
+                                (Opcional)</label>
+                            <input type="file" name="imagem_ap" id="imagem_ap" class="mt-1 block w-full ...">
+                            @error('imagem_ap')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
                     </div>
 
                     <div class="mt-8 flex items-center space-x-4 border-t pt-6">
@@ -72,8 +89,7 @@
                             Atualizar Área
                         </button>
                         {{-- Este link de cancelar usa o $bioma_id para voltar para a tela de gerenciamento correta --}}
-                        <a href="{{$returnTo}}"
-                            class="text-gray-600 hover:underline">
+                        <a href="{{ $returnTo }}" class="text-gray-600 hover:underline">
                             Cancelar
                         </a>
                     </div>

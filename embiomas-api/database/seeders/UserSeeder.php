@@ -13,12 +13,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Cria um usuário padrão se ele não existir
         User::firstOrCreate(
-            ['email' => 'admin@admin.com'], // Chave para verificar se já existe
+            ['email' => 'admin@admin.com'],
             [
                 'name' => 'Admin',
-                'password' => Hash::make('123456789'), // Use uma senha segura!
+                'password' => Hash::make('123456789'),
             ]
         );
     }

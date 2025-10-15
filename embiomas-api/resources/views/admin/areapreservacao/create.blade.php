@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
             Criar Nova Area de Preservação
         </h2>
     </x-slot>
@@ -9,13 +9,14 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             {{-- Inicia o Alpine.js, isModalOpen controla a visibilidade do popup --}}
             <div x-data="areapreservacaoFormComponent()" class="bg-white p-6 rounded-lg shadow-md">
-                <form action="{{ route('area_preservacao.store') }}" method="POST">
+                <form action="{{ route('area_preservacao.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="bioma_id" value="{{ $bioma_id }}">
                     <div class="space-y-6">
                         <div>
                             <div class="flex items-center justify-between mb-2">
-                                <label for="tipoap_id" class="block text-sm font-medium text-gray-900">Tipo de Área de Prevervação</label>
+                                <label for="tipoap_id" class="block text-sm font-medium text-gray-900">Tipo de Área de
+                                    Prevervação</label>
                                 {{-- BOTÃO PARA ABRIR O POPUP --}}
                                 <button type="button" @click.prevent="isModalOpen = true"
                                     class="text-sm text-indigo-600 hover:text-indigo-900 font-semibold">
@@ -56,6 +57,15 @@
                             <textarea name="descricao_ap" id="descricao_ap" rows="4"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">{{ old('descricao_ap') }}</textarea>
                             @error('descricao_ap')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="imagem_ap" class="block text-sm font-medium text-gray-700">Imagem da Área
+                                (Opcional)</label>
+                            <input type="file" name="imagem_ap" id="imagem_ap" class="mt-1 block w-full ...">
+                            @error('imagem_ap')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>
@@ -103,7 +113,7 @@
         </div>
     </div>
 
-<script>
+    <script>
         function areapreservacaoFormComponent() {
             return {
                 isModalOpen: false,
@@ -119,34 +129,39 @@
 
                     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                    fetch('{{ route("tipo-ap.storeAjax") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': csrfToken,
-                            'Accept': 'application/json',
-                        },
-                        body: JSON.stringify({ nome_tipoap: newName }),
-                    })
-                    .then(response => {
-                        if (!response.ok) { return response.json().then(data => Promise.reject(data)); }
-                        return response.json();
-                    })
-                    .then(newTipo => {
-                        const select = document.getElementById('tipoap_id');
-                        const option = new Option(newTipo.nome_tipoap, newTipo.id_tipoap);
-                        select.add(option);
-                        select.value = newTipo.id_tipoap;
+                    fetch('{{ route('tipo-ap.storeAjax') }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': csrfToken,
+                                'Accept': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                nome_tipoap: newName
+                            }),
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(data => Promise.reject(data));
+                            }
+                            return response.json();
+                        })
+                        .then(newTipo => {
+                            const select = document.getElementById('tipoap_id');
+                            const option = new Option(newTipo.nome_tipoap, newTipo.id_tipoap);
+                            select.add(option);
+                            select.value = newTipo.id_tipoap;
 
-                        this.newTipoName = ''; // Usa 'this' para acessar as propriedades
-                        this.isModalOpen = false; // Usa 'this' para acessar as propriedades
+                            this.newTipoName = ''; // Usa 'this' para acessar as propriedades
+                            this.isModalOpen = false; // Usa 'this' para acessar as propriedades
 
-                        alert('Tipo "' + newTipo.nome_tipoap + '" adicionado com sucesso!');
-                    })
-                    .catch(errorData => {
-                        console.error('Error:', errorData);
-                        alert('Erro ao adicionar tipo: ' + (errorData.error || 'Erro desconhecido. Verifique o console.'));
-                    });
+                            alert('Tipo "' + newTipo.nome_tipoap + '" adicionado com sucesso!');
+                        })
+                        .catch(errorData => {
+                            console.error('Error:', errorData);
+                            alert('Erro ao adicionar tipo: ' + (errorData.error ||
+                                'Erro desconhecido. Verifique o console.'));
+                        });
                 }
             }
         }

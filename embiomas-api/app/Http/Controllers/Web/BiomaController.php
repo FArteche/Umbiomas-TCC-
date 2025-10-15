@@ -195,11 +195,29 @@ class BiomaController extends Controller
     public function managePost(Bioma $bioma)
     {
         $posts = $bioma->posts()
-        ->with('postador')
-        ->orderByRaw('aprovado_post IS NULL DESC, created_at DESC')
-        ->paginate(15);
+            ->with('postador')
+            ->orderByRaw('aprovado_post IS NULL DESC, created_at DESC')
+            ->paginate(15);
 
         return view('admin.biomas.manage_post', compact('bioma', 'posts'));
+    }
+
+    public function editMap(Bioma $bioma)
+    {
+        return view('admin.biomas.edit_map', compact('bioma'));
+    }
+
+    public function updateMap(Request $request, Bioma $bioma)
+    {
+        $request->validate([
+            'area_geografica' => 'nullable|json',
+        ]);
+
+        $bioma->update([
+            'area_geografica' => json_decode($request->input('area_geografica'))
+        ]);
+
+        return redirect()->route('biomas.editMap', $bioma)->with('success', 'Mapa atualizado com sucesso!');
     }
 
     /**

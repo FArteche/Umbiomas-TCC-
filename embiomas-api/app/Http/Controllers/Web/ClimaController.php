@@ -35,7 +35,14 @@ class ClimaController extends Controller
         $validatedData = $request->validate([
             'nome_clima' => 'required|string|max:50',
             'descricao_clima' => 'required|string',
+            'imagem_clima' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20000',
         ]);
+
+        if ($request->hasFile('imagem_clima')) {
+            $path = $request->file('imagem_clima')->store('images/climas', 'public');
+
+            $validatedData['imagem_clima'] = $path;
+        }
 
         Clima::create($validatedData);
 
@@ -69,7 +76,17 @@ class ClimaController extends Controller
         $validatedData = $request->validate([
             'nome_clima' => 'required|string|max:50',
             'descricao_clima' => 'required|string',
+            'imagem_clima' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20000',
         ]);
+
+        if ($request->hasFile('imagem_clima')) {
+            if ($clima->imagem_clima) {
+                Storage::disk('public')->delete($clima->imagem_clima);
+            }
+
+            $path = $request->file('imagem_clima')->store('images/climas', 'public');
+            $validatedData['imagem_clima'] = $path;
+        }
 
         $clima->update($validatedData);
         $redirectUrl = $request->input('return_to', route('biomas.index'));

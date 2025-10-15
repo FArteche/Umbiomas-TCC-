@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Caracteristica_SE;
 use App\Models\Tipo_CSE;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class Caracteristica_SEController extends Controller
 {
@@ -45,10 +46,15 @@ class Caracteristica_SEController extends Controller
         $validatedData = $request->validate([
             'nome_cse' => 'required|string|max:100',
             'descricao_cse' => 'required|string',
+            'imagem_cse' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20000',
             'tipocse_id' => 'required|exists:tipo_cse,id_tipocse',
             'bioma_id' => 'required|exists:biomas,id_bioma',
         ]);
+        if ($request->hasFile('imagem_ cse')) {
+            $path = $request->file('imagem_cse')->store('images/cse', 'public');
 
+            $validatedData['imagem_cse'] = $path;
+        }
         Caracteristica_SE::create($validatedData);
 
         // Redireciona de volta para a página de gerenciamento daquele bioma
@@ -85,9 +91,17 @@ class Caracteristica_SEController extends Controller
         $validatedData = $request->validate([
             'nome_cse' => 'required|string|max:100',
             'descricao_cse' => 'required|string',
+            'imagem_cse' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20000',
             'tipocse_id' => 'required|exists:tipo_cse,id_tipocse'
         ]);
+        if ($request->hasFile('imagem_cse')) {
+            if ($caracteristica_se->imagem_cse) {
+                Storage::disk('public')->delete($caracteristica_se->imagem_cse);
+            }
 
+            $path = $request->file('imagem_cse')->store('images/cse', 'public');
+            $validatedData['imagem_cse'] = $path;
+        }
         $caracteristica_se->update($validatedData);
 
         $redirectUrl = $request->input('return_to', route('biomas.index'));

@@ -13,7 +13,13 @@ class Caracteristica_SE extends Model
 
     protected $table = 'caracteristica_se';
     protected $primaryKey = 'id_cse';
-    protected $fillable = ['nome_cse', 'descricao_cse', 'bioma_id', 'tipocse_id'];
+    protected $fillable = [
+        'nome_cse',
+        'descricao_cse',
+        'bioma_id',
+        'imagem_cse',
+        'tipocse_id'
+    ];
 
     //RELACIONAMENTO PARA O HISTÓRICO DE ALTERAÇÕES (MORPH MANY)
     public function historico()

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('id_clima');
             $table->string('nome_clima', 50);
             $table->text('descricao_clima');
+            $table->string('imagem_clima')->nullable();
             $table->timestamps();
         });
     }

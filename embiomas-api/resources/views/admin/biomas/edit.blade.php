@@ -96,6 +96,8 @@
                             class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Relevo</a>
                         <a href="{{ route('biomas.manageHidrografia', $bioma) }}"
                             class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Hidrografia</a>
+                        <a href="{{ route('biomas.editMap', $bioma) }}"
+                            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">Editar Mapa do Bioma</a>
                     </div>
                 </div>
             </div>

@@ -62,6 +62,10 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                 <div class="flex items-center justify-end space-x-2 mt-2">
 
+                                                    <a href="{{route('areas-preservacao.editMap', ['area_preservacao' => $item])}}">
+                                                        Localização
+                                                    </a>
+
                                                     {{-- Ícone/Link de Editar --}}
                                                     <a href="{{ route('area_preservacao.edit', ['area_preservacao' => $item, 'return_to' => url()->current()]) }}"
                                                         class="text-gray-400 hover:text-blue-600 p-1 rounded-full transition-colors duration-200">
