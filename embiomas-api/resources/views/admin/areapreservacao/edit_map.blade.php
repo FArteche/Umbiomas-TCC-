@@ -42,7 +42,6 @@
     </div>
 
     <script>
-        // Inicializa o mapa, centralizado no Brasil
         const map = L.map('map').setView([-14.235, -51.925], 4);
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -50,17 +49,13 @@
         }).addTo(map);
 
         const areaInput = document.getElementById('area_geografica_input');
-        let marker = null; // Variável para guardar nosso marcador
+        let marker = null;
 
-        // 1. Pegamos os dados do Blade como antes
         let savedCoords = @json($area->area_geografica);
 
-        // 2. (OPCIONAL, MAS RECOMENDADO) Adicionamos um log para depuração.
-        // Pressione F12 no navegador e vá para a aba "Console" para ver o que está sendo impresso.
         console.log("Dados recebidos do banco:", savedCoords);
         console.log("Tipo dos dados:", typeof savedCoords);
 
-        // 3. A MÁGICA: Verificamos se os dados são uma string e, se forem, os convertemos (parse).
         if (typeof savedCoords === 'string' && savedCoords) {
             try {
                 savedCoords = JSON.parse(savedCoords);

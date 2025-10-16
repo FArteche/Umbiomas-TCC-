@@ -14,6 +14,12 @@ class HidrografiaResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id_hidrografia,
+            'nome' => $this->nome_hidrografia,
+            'descricao' => $this->descricao_hidrografia,
+            'tipo' => $this->tipo_hidrografia,
+            'imagem_url' => $this->imagem_hidrografia ? url('storage/' . $this->imagem_hidrografia) : null,
+        ];
     }
 }

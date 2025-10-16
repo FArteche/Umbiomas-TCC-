@@ -14,6 +14,13 @@ class FloraResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id_flora,
+            'nome' => $this->nome_flora,
+            'nome_cientifico' => $this->nome_cientifico_flora,
+            'familia' => $this->familia_flora,
+            'descricao' => $this->descricao_flora,
+            'imagem_url' => $this->imagem_flora ? url('storage/' . $this->imagem_flora) : null,
+        ];
     }
 }

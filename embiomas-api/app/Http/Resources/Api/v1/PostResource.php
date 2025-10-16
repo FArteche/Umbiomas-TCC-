@@ -7,13 +7,20 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id_post,
+            'titulo' => $this->titulo_post,
+            'texto' => $this->texto_post,
+            'midia_url' => $this->midia_post ? url('storage/' . $this->midia_post) : null,
+            'data_publicacao' => $this->created_at->format('d/m/Y'),
+            'postador' => $this->whenLoaded('postador', function () {
+                return [
+                    'nome' => $this->postador->nome_postador,
+                    'instituicao' => $this->postador->instituicao,
+                ];
+            }),
+        ];
     }
 }

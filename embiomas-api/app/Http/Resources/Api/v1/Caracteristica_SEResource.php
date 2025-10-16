@@ -14,6 +14,18 @@ class Caracteristica_SEResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id_cse,
+            'nome' => $this->nome_cse,
+            'descricao' => $this->descricao_cse,
+            'imagem_url' => $this->imagem_cse ? url('storage/' . $this->imagem_cse) : null,
+
+            'tipo' => $this->whenLoaded('tipocse', function () {
+                return [
+                    'id' => $this->tipocse->id_tipocse,
+                    'nome' => $this->tipocse->nome_tipocse,
+                ];
+            }),
+        ];
     }
 }

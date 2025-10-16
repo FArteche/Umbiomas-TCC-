@@ -7,13 +7,15 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class FaunaResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id_fauna,
+            'nome' => $this->nome_fauna,
+            'nome_cientifico' => $this->nome_cientifico_fauna,
+            'familia' => $this->familia_fauna,
+            'descricao' => $this->descricao_fauna,
+            'imagem_url' => $this->imagem_fauna ? url('storage/' . $this->imagem_fauna) : null,
+        ];
     }
 }

@@ -14,6 +14,12 @@ class RelevoResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id_relevo,
+            'nome' => $this->nome_relevo,
+            'descricao' => $this->descricao_relevo,
+            'tipo' => $this->tipo_relevo,
+            'imagem_url' => $this->imagem_relevo ? url('storage/' . $this->imagem_relevo) : null,
+        ];
     }
 }

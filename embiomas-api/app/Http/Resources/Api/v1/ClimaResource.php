@@ -14,6 +14,11 @@ class ClimaResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id_clima,
+            'nome' => $this->nome_clima,
+            'descricao' => $this->descricao_clima,
+            'imagem_url' => $this->imagem_clima ? url('storage/' . $this->imagem_clima) : null,
+        ];
     }
 }

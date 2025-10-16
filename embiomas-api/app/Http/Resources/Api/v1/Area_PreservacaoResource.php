@@ -14,6 +14,19 @@ class Area_PreservacaoResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id_area_preservacao,
+            'nome' => $this->nome_ap,
+            'descricao' => $this->descricao_ap,
+            'imagem_url' => $this->imagem_ap ? url('storage/' . $this->imagem_ap) : null,
+            'localizacao' => $this->area_geografica,
+
+            'tipo' => $this->whenLoaded('tipoap', function () {
+                return [
+                    'id' => $this->tipoap->id_tipoap,
+                    'nome' => $this->tipoap->nome_tipoap,
+                ];
+            }),
+        ];
     }
 }

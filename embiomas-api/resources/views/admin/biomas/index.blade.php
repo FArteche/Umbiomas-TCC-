@@ -14,13 +14,13 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="w-fit mx-auto my-4 sm:px-6 lg:px-8 flex justify-center">
+                    <a href="{{ route('biomas.create') }}"
+                        class="inline-flex items-center px-10 py-4 bg-green-500 border border-transparent rounded-md font-semibold text-s text-white uppercase tracking-widest hover:bg-green-600">
+                        Criar Novo Bioma
+                    </a>
+                </div>
                 <div class="p-6 text-gray-900">
-                    <div class="flex justify-between items-center mbu-7">
-                        <a href="{{ route('biomas.create') }}"
-                            class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600">
-                            Criar Novo Bioma
-                        </a>
-                    </div>
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
